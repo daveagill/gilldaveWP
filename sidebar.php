@@ -10,8 +10,8 @@
  */
 ?>
 
-	<?php if ( is_active_sidebar( 'sidebar-1' ) ) : ?>
+	<?php if ( is_active_sidebar( 'blog-sidebar' ) ) : ?>
 		<div id="secondary" class="widget-area" role="complementary">
-			<?php dynamic_sidebar( 'sidebar-1' ); ?>
+			<?php dynamic_sidebar( 'blog-sidebar' ); ?>
 		</div><!-- #secondary -->
 	<?php endif; ?>
