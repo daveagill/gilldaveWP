@@ -6,6 +6,19 @@
 if ( ! isset( $content_width ) )
 	$content_width = 625;
 
+function gilldave_customize_register( $wp_customize )
+{
+	$wp_customize->add_setting( 'site-title-slug' , array(
+		'default' => get_bloginfo( 'name' ),
+	) );
+	
+	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'site-title-slug-control', array(
+		'label'        => 'Site Title Slug',
+		'section'    => 'title_tagline',
+		'settings'   => 'site-title-slug',
+	) ) );
+}
+add_action( 'customize_register', 'gilldave_customize_register' );
 
 function gilldave_setup() {
 
@@ -59,15 +72,16 @@ function twentytwelve_wp_title( $title, $sep ) {
 	// don't touch feeds, see: http://core.trac.wordpress.org/ticket/21233#comment:9
 	if ( is_feed() )
 		return $title;
+		
+	// add the URL.
+	$title .= get_theme_mod( 'site-title-slug' );
+		
+	// leave it at that for the homepage
+	if ( is_front_page() ) {
+		return $title;
+	}
 
-	// Add the site name.
-	$title .= get_bloginfo( 'name' );
-
-	// Add 'Home' to the home/front page.
-	if ( is_home() || is_front_page() )
-		$title = "$title $sep Home";
-
-	// Add a page number if necessary.
+	// add a page number if necessary
 	if ( $paged >= 2 || $page >= 2 )
 		$title = "$title $sep " . sprintf( 'Page %s', max( $paged, $page ) );
 
